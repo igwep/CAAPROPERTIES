@@ -99,8 +99,8 @@ function LanguagePicker() {
   return <div className="lang-picker"><button className="lang-trigger" aria-haspopup="listbox" aria-expanded={open} onClick={() => setOpen(!open)}>{current.short} <ChevronDown size={13} /></button>{open && <><div className="lang-backdrop" onClick={() => setOpen(false)} /><div className="lang-menu" role="listbox" aria-label="Language">{languages.map((language) => <button key={language.key} role="option" aria-selected={language.key === lang} className={language.key === lang ? 'active' : ''} onClick={() => { setLang(language.key); setOpen(false); }}>{language.label}<small>{language.short}</small></button>)}</div></>}</div>;
 }
 
-// Mock access gate shown before the site: any valid email + the agency ID signs you in (no backend).
-const DEMO_AGENCY_ID = '1000023457';
+// Private access gate shown before the site: any valid email + the agency ID signs you in (no backend).
+const AGENCY_ID = '1000023457';
 
 function LoginPage({ onSignIn }: { onSignIn: () => void }) {
   const t = useCopy();
@@ -110,11 +110,20 @@ function LoginPage({ onSignIn }: { onSignIn: () => void }) {
   const submit = (event: React.FormEvent) => {
     event.preventDefault();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError(t['login.errEmail']); return; }
-    if (id.trim() !== DEMO_AGENCY_ID) { setError(t['login.errId']); return; }
+    if (id.trim() !== AGENCY_ID) { setError(t['login.errId']); return; }
     localStorage.setItem('caa-auth', email);
     onSignIn();
   };
-  return <div className="login-page"><div className="login-lang"><LanguagePicker /></div><div className="login-card"><Logo /><span className="eyebrow">{t['login.eyebrow']}</span><h1>{t['login.title']}</h1><p>{t['login.sub']}</p><form onSubmit={submit}><label>{t['login.email']}<div className="login-field"><Mail size={16} /><input type="email" value={email} onChange={(event) => { setEmail(event.target.value); setError(''); }} placeholder={t['login.emailPh']} autoComplete="email" /></div></label><label>{t['login.id']}<div className="login-field"><CircleUserRound size={16} /><input type="text" inputMode="numeric" value={id} onChange={(event) => { setId(event.target.value); setError(''); }} placeholder={t['login.idPh']} autoComplete="username" /></div></label>{error && <small className="login-error">{error}</small>}<button className="primary-button login-button" type="submit">{t['login.button']}</button></form></div></div>;
+  const cities = new Set(allListings.map((entry) => entry.city ?? 'Las Vegas')).size;
+  return <div className="login-page">
+    <aside className="login-brand">
+      <div className="login-brand-inner"><Logo /><h2>{t['login.tagline']}</h2><div className="login-rule" /><ul><li><Sparkles size={14} /> {allListings.length} residences</li><li><Compass size={14} /> {cities} destinations</li><li><Shield size={14} /> Off-market access</li></ul></div>
+    </aside>
+    <section className="login-panel">
+      <div className="login-lang"><LanguagePicker /></div>
+      <div className="login-form-wrap"><span className="eyebrow">{t['login.eyebrow']}</span><h1>{t['login.welcome']}</h1><p className="login-note">{t['login.note']}</p><form onSubmit={submit}><label>{t['login.email']}<div className="login-field"><Mail size={16} /><input type="email" value={email} onChange={(event) => { setEmail(event.target.value); setError(''); }} placeholder={t['login.emailPh']} autoComplete="email" /></div></label><label>{t['login.id']}<div className="login-field"><CircleUserRound size={16} /><input type="text" inputMode="numeric" value={id} onChange={(event) => { setId(event.target.value); setError(''); }} placeholder={t['login.idPh']} autoComplete="username" /></div></label>{error && <small className="login-error">{error}</small>}<button className="primary-button login-button" type="submit">{t['login.button']} <ArrowRight size={15} /></button></form></div>
+    </section>
+  </div>;
 }
 
 function Header({ onHome }: { onHome: () => void }) {

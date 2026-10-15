@@ -20,21 +20,32 @@ button, a { transition: all .2s ease; }
 .utility-right button { color: #fff; background: #111; padding: 9px 14px; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
 .lang-picker { position: relative; }
 .lang-trigger { display: flex; align-items: center; gap: 5px; padding: 0; color: #5f5e5e; background: transparent; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; }
-.login-page { min-height: 100vh; display: grid; place-items: center; padding: 40px 20px; background: #111 radial-gradient(circle at 18% 12%, rgba(0, 107, 115, .3), transparent 46%), radial-gradient(circle at 82% 88%, rgba(197, 160, 89, .16), transparent 52%); }
-.login-lang { position: fixed; top: 22px; right: 24px; }
-.login-lang .lang-trigger { justify-content: center; width: 40px; height: 40px; color: #f9f9f8; background: #1c1c1c; border: 1px solid #2a2a2a; border-radius: 999px; }
-.login-card { position: relative; width: min(430px, 100%); padding: 42px 38px; text-align: center; color: #f9f9f8; background: rgba(255, 255, 255, .04); border: 1px solid rgba(255, 255, 255, .1); border-radius: 14px; backdrop-filter: blur(10px); box-shadow: 0 30px 80px rgba(0, 0, 0, .5); }
-.login-card .logo { gap: 2px; }
-.login-card .logo span { font-size: 21px; color: #f9f9f8; }
-.login-card h1 { margin: 12px 0 8px; font: 400 26px/1.25 'Playfair Display', serif; }
-.login-card > p { margin: 0 0 26px; color: #9e9e9e; font-size: 13px; line-height: 1.6; }
-.login-card form { display: grid; gap: 14px; text-align: left; }
-.login-card label { display: grid; gap: 6px; color: #c5a059; font-size: 10px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; }
-.login-field { display: flex; align-items: center; gap: 9px; padding: 12px; background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 6px; }
-.login-field:focus-within { border-color: #006b73; }
-.login-field input { width: 100%; color: #fff; background: transparent; border: 0; outline: 0; font-size: 14px; }
-.login-error { color: #e5715f; font-size: 12px; }
-.login-button { width: 100%; padding: 13px; margin-top: 4px; }
+.login-page { min-height: 100vh; display: grid; grid-template-columns: 1.05fr .95fr; }
+.login-brand { position: relative; display: flex; align-items: flex-end; padding: 54px 58px; background: linear-gradient(180deg, rgba(8, 44, 47, .82), rgba(6, 28, 30, .94)), url("https://lh3.googleusercontent.com/aida-public/AB6AXuByYbKY-OEOqxkX6oUmyB9GFeHyAqxawcyVxjv0n5BhpSICDqGStlSE9lA_dfjjIXmr0twgRBlgCAAewpMfX-ttKNHzN2dP2lFEvkcqg2gtccPD45ZE9ixTHYDj34T8tyONvWElpwY4RzsW_S_e6bD2VMGbWZWcibWKdbFmgssUPeryDZSGMcapS9YUJVMSMF5j6p44aKZlwOhbGTJaO9yGgkFMvNBarVwLwDzhtHpKLYZiOEZbobbs") center / cover no-repeat, #0a3035; }
+.login-brand-inner { color: #f9f9f8; }
+.login-brand .logo { align-items: flex-start; }
+.login-brand .logo small { margin-left: 3px; }
+.login-brand h2 { max-width: 430px; margin: 30px 0 0; font: 400 clamp(26px, 2.5vw, 37px)/1.3 'Playfair Display', serif; }
+.login-rule { width: 46px; height: 2px; background: #c5a059; margin: 26px 0; }
+.login-brand ul { display: flex; flex-wrap: wrap; gap: 10px 24px; margin: 0; padding: 0; list-style: none; color: rgba(249, 249, 248, .78); font-size: 12px; letter-spacing: .06em; }
+.login-brand li { display: flex; align-items: center; gap: 7px; }
+.login-brand li svg { color: #c5a059; }
+.login-panel { position: relative; display: grid; place-items: center; padding: 40px 24px; background: #f9f9f8; }
+.login-lang { position: absolute; top: 22px; right: 26px; }
+.login-form-wrap { width: min(400px, 100%); }
+.login-panel .eyebrow { display: block; margin-bottom: 14px; color: #c5a059; font: 600 10px/1.5 Inter, sans-serif; letter-spacing: .22em; }
+.login-panel h1 { margin: 0 0 8px; color: #111; font: 400 clamp(28px, 3vw, 34px)/1.2 'Playfair Display', serif; }
+.login-note { margin: 0 0 28px; color: #767676; font-size: 13.5px; line-height: 1.65; }
+.login-panel form { display: grid; gap: 16px; }
+.login-panel label { display: grid; gap: 7px; color: #1a1a1a; font-size: 10.5px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+.login-field { display: flex; align-items: center; gap: 10px; padding: 13px 14px; background: #fff; border: 1px solid #dededb; border-radius: 6px; transition: border-color .2s, box-shadow .2s; }
+.login-field svg { color: #9e9e9e; flex: none; }
+.login-field:focus-within { border-color: #006b73; box-shadow: 0 0 0 3px rgba(0, 107, 115, .12); }
+.login-field:focus-within svg { color: #006b73; }
+.login-field input { width: 100%; color: #111; background: transparent; border: 0; outline: 0; font-size: 14px; }
+.login-field input::placeholder { color: #b6b6b2; }
+.login-error { color: #b3261e; font-size: 12px; }
+.login-button { width: 100%; padding: 14px; margin-top: 8px; }
 .utility-right .signout-button { display: flex; align-items: center; color: inherit; background: transparent; padding: 0; cursor: pointer; text-transform: none; letter-spacing: 0; }
 .signout-button:hover { color: #006b73; }
 .lang-trigger:hover, .lang-trigger[aria-expanded="true"] { color: #006b73; }
@@ -298,6 +309,9 @@ button, a { transition: all .2s ease; }
 
 /* mobile: listing details acquire via the bottom bar only */
 @media (max-width: 700px) {
+  .login-page { grid-template-columns: 1fr; }
+  .login-brand { display: none; }
+  .login-panel { padding: 64px 20px 48px; }
   .top-button { display: none; }
   .site-header { position: sticky; top: 0; z-index: 45; background: rgba(249,249,248,.97); backdrop-filter: blur(8px); box-shadow: 0 1px 8px rgba(0,0,0,.08); }
   .detail-offer .add-cart-button { display: none; }
