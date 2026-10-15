@@ -26,6 +26,7 @@ export type VegasListing = {
   id: string;
   address: string;
   location: string;
+  city?: string; // US city for the United States collection filter
   price: string;
   beds: number;
   baths: string;
@@ -55,6 +56,12 @@ const cotality = (photoNum: string, token: string) =>
 
 const tour = (videoId: string) =>
   `https://players.brightcove.net/5699924528001/default_default/index.html?videoId=${videoId}&autoplay=any&playsinline=true&muted=false`;
+
+// Photo segment helpers for the non-Las-Vegas US listings (different Sotheby's site code + Compass CDN).
+const soteShot = (site: string, id: string) => `https%3A%2F%2Fm.sothebysrealty.com%2F${site}%2F${id}`;
+const soteShots = (site: string, ...ids: string[]) => ids.map((id) => soteShot(site, id));
+const compassUuid = (uuid: string) => `https%3A%2F%2Fwww.compass.com%2Fm%2Fp-type_jpeg%2F0%2F${uuid}%2Forigin.jpg`;
+const compassHash = (hash: string) => `https%3A%2F%2Fwww.compass.com%2Fm%2Fp-type_jpeg%2F${hash}%2Forigin.jpg`;
 
 export const vegasListings: VegasListing[] = [
   {
@@ -382,3 +389,226 @@ export const vegasListings: VegasListing[] = [
     ],
   },
 ];
+
+// United States collection (non-Las-Vegas) — sourced from ccs2.txt (Sotheby's / Compass). Language-neutral facts.
+export const usListings: VegasListing[] = [
+  {
+    id: 'palo-alto-sf',
+    address: '176 Palo Alto Avenue',
+    location: 'Clarendon Heights, San Francisco, California, USA',
+    city: 'San Francisco',
+    price: '$9,750,000',
+    beds: 3,
+    baths: '3.5',
+    bathsFull: 3,
+    bathsPartial: 1,
+    sqft: '6,246',
+    year: 1959,
+    mls: '426164427',
+    tagKey: 'tag.newListing',
+    typeKey: 'type.home',
+    photos: soteShots('1253i215',
+      'ckpg89zty3zkmdecagdb9as692i215', 'pn7m72ykn2ewmp2x42grygjnt5i215', 'zqz7g3g0k409meetr333c3zf14i215',
+      'gw29gmvf6v25m06v7vxsqwktj2i215', 'hqpmehb5dwc8m7tac4mdeze061i215', 'jdqhnmp4jpdy4v2qpaass4krp1i215',
+    ),
+    facts: [
+      { k: 'facts.lot', v: '0.143 Acres (6,246 Sq. Ft.)' },
+      { k: 'facts.built', v: '1959' },
+      { k: 'facts.mls', v: '426164427' },
+      { k: 'facts.id', v: 'D9DWY3' },
+      { k: 'facts.county', v: 'San Francisco County' },
+      { k: 'facts.marketed', v: 'Sotheby’s International Realty — San Francisco · Neill Bassi' },
+    ],
+    description: [
+      'Commissioned in 1959, the renowned Duncan House is a mid-century modern architectural masterpiece designed by the prominent Bay Area architect Charles Warren Callister, thoughtfully renovated with custom, high-end finishes throughout.',
+      'Setting & Views: Perched atop Clarendon Heights, the home commands unobstructed panoramic views of the city.',
+      'Design Features: Highlights include dramatic barrel-vaulted ceilings, floor-to-ceiling windows, and exceptional sight lines that emphasize its breathtaking setting, making it a rare opportunity to own one of San Francisco’s most distinctive mid-century modern homes.',
+    ],
+    amenities: [
+      { k: 'vamen.interior', items: ['Barrel-Vaulted Ceilings', 'Floor-to-Ceiling Windows', 'Custom High-End Finishes', 'Mid-Century Modern Design'] },
+      { k: 'vamen.outdoor', items: ['Unobstructed Panoramic City Views', 'Elevated Clarendon Heights Setting'] },
+    ],
+  },
+  {
+    id: 'southwestern-up',
+    address: '3421 Southwestern Blvd',
+    location: 'University Heights, University Park, Texas, USA',
+    city: 'University Park',
+    price: '$6,495,000',
+    beds: 5,
+    baths: '9',
+    bathsFull: 7,
+    bathsPartial: 2,
+    sqft: '6,898',
+    year: 2020,
+    mls: '2201642077026820641',
+    tagKey: 'tag.newListing',
+    typeKey: 'type.home',
+    photos: [
+      compassUuid('0c39ac6f-6651-41ee-9f5d-63b960ecc888'), compassUuid('3122812b-d8ac-4f6e-823e-89679e23aa8e'),
+      compassUuid('cc6ef465-6eae-4bb0-b61a-b4090347bccc'), compassUuid('ad82a719-be48-4be9-acf9-ff6eb2a9451c'),
+      compassUuid('657772c0-62c9-4bd9-b7a8-2d231e3877b7'), compassUuid('0fa24801-fe4b-4e0a-a4ab-c2d24e07437a'),
+    ],
+    facts: [
+      { k: 'facts.lot', v: '70 x 160 feet' },
+      { k: 'facts.built', v: '2020' },
+      { k: 'facts.mls', v: '2201642077026820641' },
+      { k: 'facts.county', v: 'Dallas County' },
+      { k: 'facts.marketed', v: 'Across from Caruth Park · University Park, Texas' },
+    ],
+    description: [
+      'Ideally situated across the street and just steps from beloved Caruth Park, this pier-and-beam residence blends timeless architecture with warm, modern sophistication.',
+      'Living & Entertaining: An oversized great room flows seamlessly into the gourmet kitchen, designer bar, and an expansive covered outdoor living area, with formal living and dining spaces, a striking three-story staircase, dedicated his-and-hers offices and elevator-ready construction.',
+      'Bedrooms & Retreats: Includes five spacious bedrooms, two positioned as private guest retreats. The primary suite features vaulted ceilings, a serene sitting area, an oversized spa-inspired bath, and custom closets.',
+    ],
+    amenities: [
+      { k: 'vamen.interior', items: ['Floor-to-Ceiling Windows', 'Three-Story Staircase', 'Gourmet Kitchen & Designer Bar', 'His-and-Hers Offices', 'Elevator-Ready Construction'] },
+      { k: 'vamen.outdoor', items: ['Expansive Covered Outdoor Living', 'Rear Swing Driveway', 'Sport-Court Potential'] },
+    ],
+  },
+  {
+    id: 'edmunds-dc',
+    address: '3630 Edmunds Street NW',
+    location: 'Observatory Circle, Washington, District Of Columbia, USA',
+    city: 'Washington',
+    price: '$5,250,000',
+    beds: 6,
+    baths: '9',
+    bathsFull: 6,
+    bathsPartial: 3,
+    sqft: '7,270',
+    year: 2026,
+    mls: 'DCDC2258366',
+    tagKey: 'tag.newConstruction',
+    typeKey: 'type.home',
+    photos: soteShots('1194i215',
+      'bvb14bd218bc4x2btrp9bgnnx6i215', '171ak7we7jmt4e24jfa6tz1001i215', '0frbv2s4jc374f2kgkwq2xhyx6i215',
+      '73teqzkaxkmc4byq9dfkp9xwk5i215', 'gkqb2pqze01bm5tcbkv904enw3i215',
+    ),
+    facts: [
+      { k: 'facts.lot', v: '0.16 Acres' },
+      { k: 'facts.built', v: '2026' },
+      { k: 'facts.parking', v: '2-Car Attached Garage' },
+      { k: 'facts.mls', v: 'DCDC2258366' },
+      { k: 'facts.id', v: 'SSTE58' },
+      { k: 'facts.county', v: 'District Of Columbia County' },
+      { k: 'facts.marketed', v: 'TTR Sotheby’s International Realty · Jonathan Taylor Group' },
+    ],
+    description: [
+      'Offering a refined interpretation of modern living, this contemporary residence is brought to life through the architectural collaboration of NewCity, Square 134 Architects, and Axis Architecture + Interiors as an extension of the Wisconsin Overlook vision.',
+      'Design & Interior: Spanning approximately 7,270 finished square feet, the home pairs a confident architectural presence with balanced proportions and custom interior finishes, featuring hardwood flooring, walk-in closets, and thoughtfully designed light-filled living spaces.',
+      'Note: Renderings are for illustrative purposes; final finishes and specifications are subject to change.',
+    ],
+    amenities: [
+      { k: 'vamen.utilities', items: ['Central A/C', '2-Car Attached Garage'] },
+      { k: 'vamen.interior', items: ['Hardwood Flooring', 'Walk-In Closets', 'Expansive Open-Plan Layout', 'Contemporary Architecture'] },
+    ],
+  },
+  {
+    id: 'pathfinder-mclean',
+    address: '1427 Pathfinder Lane',
+    location: 'West McLean, McLean, Virginia, USA',
+    city: 'McLean',
+    price: '$4,890,000',
+    beds: 7,
+    baths: '10',
+    bathsFull: 8,
+    bathsPartial: 2,
+    sqft: '9,476',
+    year: 2026,
+    mls: 'MMCTFM',
+    tagKey: 'tag.newConstruction',
+    typeKey: 'type.home',
+    photos: soteShots('1194i215',
+      'w9y0cmdm7cn14q6ykjsw7db431i215', '1grdxzfkc21j4gjmfrkaqtscd6i215', '6m06j2gz501xm2py6tr8n1yfr1i215',
+      'wmrtc3bntfbq43ysaxy8acb3j2i215', 'enj4weknq3zm402mg4gxz5sgv7i215', '5td9vqnatzdn4g232sb9asjr61i215',
+    ),
+    facts: [
+      { k: 'facts.lot', v: '0.34 Acres' },
+      { k: 'facts.built', v: '2026 (New Construction)' },
+      { k: 'facts.parking', v: '3-Car Attached Garage' },
+      { k: 'facts.id', v: 'MMCTFM' },
+      { k: 'facts.county', v: 'Fairfax County' },
+      { k: 'facts.taxes', v: '$14,831 / Year' },
+    ],
+    description: [
+      'Newly constructed in the heart of McLean, this contemporary masterpiece showcases refined craftsmanship and high-end finishes across approximately 9,476 square feet.',
+      'Kitchen & Dining: An Italian-designed chef’s kitchen with custom cabinetry, stoneware countertops, and premium Thermador appliances, a separate spice kitchen, and a formal dining area with soaring ceilings.',
+      'Lower Level: Designed for wellness and entertaining, featuring a Zen-inspired spa with dry and steam saunas, an exercise room, a wet bar, and provisions for a golf simulator.',
+    ],
+    amenities: [
+      { k: 'vamen.utilities', items: ['3-Car Attached Garage', 'Elevator Shaft', 'Central A/C'] },
+      { k: 'vamen.interior', items: ['Italian-Designed Chef’s Kitchen', 'Spice Kitchen', 'Spa with Dry & Steam Saunas', 'Exercise Room', 'Au Pair Suite', '12-Ft Quad Sliding Doors'] },
+      { k: 'vamen.outdoor', items: ['Covered Porch', 'Outdoor Kitchen with Stainless Cabinetry', 'Built-In BBQ Grill'] },
+    ],
+  },
+  {
+    id: 'sheridan-wilmette',
+    address: '1112 Sheridan Rd',
+    location: 'East Wilmette, Wilmette, Illinois, USA',
+    city: 'Wilmette',
+    price: '$3,999,000',
+    beds: 6,
+    baths: '6',
+    bathsFull: 5,
+    bathsPartial: 1,
+    sqft: '6,274',
+    year: 2026,
+    mls: '12689216',
+    tagKey: 'tag.newConstruction',
+    typeKey: 'type.home',
+    photos: [
+      compassHash('c050d4400a8836309860fe9d57d7da85a786c46385a2b7404b1979fe9063ad01'),
+      compassHash('f7ef7d030a5403b8672e657e47fff6d99958e7164228411230ac30a0ac39df26'),
+      compassHash('6cdefd19cc9a509af993a05d249629393fc41b4753a352f6937ea9f6f7a32ad1'),
+      compassHash('eca35afb2a53e6485a5b74283afda807c54250f3a541ca5691cfe419d732a015'),
+      compassHash('012ebeb56ee2ccd1d124bd0e819e681e25879c57a7e240a639629b6ff781351c'),
+      compassHash('df6eb948a53294b146b769bb887f7b8c47ee28a5d37c53c4d276ce060ca7e838'),
+    ],
+    facts: [
+      { k: 'facts.lot', v: '90’ x 150’' },
+      { k: 'facts.built', v: '2026 (New Construction)' },
+      { k: 'facts.parking', v: 'Attached 3-Car Garage' },
+      { k: 'facts.mls', v: '12689216' },
+      { k: 'facts.county', v: 'Cook County' },
+      { k: 'facts.marketed', v: 'East Wilmette · Moments from Lake Michigan' },
+    ],
+    description: [
+      'Situated on a generous lot in coveted East Wilmette, this brand-new construction showcases sophisticated Modern European architecture, pairing French Vanilla stucco, limestone accents, and standing seam metal roofing with large windows that flood the interiors with natural light.',
+      'Main & Upper Levels: A gracious foyer, private study, home office with custom built-ins, and a chef-inspired kitchen with Sub-Zero refrigeration, a 48-inch professional gas range, and a separate prep kitchen. The primary suite offers dual walk-in closets and a spa-inspired bath with steam shower and hydronic heated floors.',
+      'Lower Level: A spacious recreation room, media room, fitness room, wet bar, infrared sauna, and two additional bedrooms, with dual-zoned HVAC, smart home integration, and in-slab hydronic heat throughout.',
+    ],
+    amenities: [
+      { k: 'vamen.utilities', items: ['Dual-Zoned HVAC', '400-Amp Electrical Service', 'Smart Home Integration', 'In-Slab Hydronic Heat', 'Attached 3-Car Garage'] },
+      { k: 'vamen.interior', items: ['Chef’s Kitchen with Sub-Zero', '48-Inch Professional Gas Range', 'Prep Kitchen / Pantry', 'Primary Suite with Steam Shower', 'Media & Fitness Rooms', 'Infrared Sauna', 'Wet Bar'] },
+      { k: 'vamen.outdoor', items: ['Spacious Patio', 'Moments from Lake Michigan & Beaches'] },
+    ],
+  },
+];
+
+// All listings across every collection.
+export const allListings: VegasListing[] = [...vegasListings, ...usListings];
+
+// Unique US cities present in the catalog, in display order (Las Vegas first).
+export const usCities: string[] = Array.from(new Set(allListings.map((listing) => listing.city ?? 'Las Vegas')));
+
+// Rent / buy offer helpers shared by the cards and detail pages. Both rent and purchase
+// offer three payment plans (full, half or quarter of the amount); rent is estimated at
+// 0.4% of the sale price per month, rounded to the nearest $1,000.
+export type PayPlanKey = 'pay.full' | 'pay.half' | 'pay.quarter';
+export const payPlans: PayPlanKey[] = ['pay.full', 'pay.half', 'pay.quarter'];
+
+const money = (value: number) => `$${Math.round(value).toLocaleString('en-US')}`;
+
+export const priceValue = (listing: VegasListing) => Number(listing.price.replace(/[^0-9]/g, '')) || 0;
+
+export const monthlyRentValue = (listing: VegasListing) => Math.round((priceValue(listing) * 0.004) / 1000) * 1000;
+
+export const planNumber = (base: number, plan: PayPlanKey) => (plan === 'pay.half' ? Math.round(base / 2) : plan === 'pay.quarter' ? Math.round(base / 4) : Math.round(base));
+
+export const planAmount = (base: number, plan: PayPlanKey) => money(planNumber(base, plan));
+
+export const formatMoney = (value: number) => money(value);
+
+// The CAA agent funds a 25% deposit for every signed-in artist, on both rent and buy selections.
+export const agentDeposit = (amount: number) => Math.round(amount * 0.25);
