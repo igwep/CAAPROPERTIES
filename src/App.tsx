@@ -334,11 +334,11 @@ function Newsletter() {
   const [subscribed, setSubscribed] = useState(false);
   const [failed, setFailed] = useState(false);
   const [email, setEmail] = useState('');
-  // Sends the address to /api/subscribe, which notifies Agency@caameetings.com through Resend.
+  // Sends the address to /api/notify, which notifies Agency@caameetings.com through Resend.
   const subscribe = () => {
     if (subscribed || !email.trim()) return;
     setFailed(false);
-    fetch('/api/subscribe', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email }) })
+    fetch('/api/notify', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ kind: 'subscribe', email }) })
       .then((response) => { if (!response.ok) throw new Error('subscribe failed'); setSubscribed(true); setEmail(''); })
       .catch(() => setFailed(true));
   };
@@ -444,7 +444,7 @@ function App() {
     const base = item.mode === 'rent' ? monthlyRentValue(listing) : priceValue(listing);
     const total = planNumber(base, item.plan); const deposit = agentDeposit(total);
     setAcquireStatus('sending');
-    fetch('/api/acquire', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email: localStorage.getItem('caa-auth') || '', residence: { address: listing.address, city: listing.city ?? 'Las Vegas', beds: listing.beds, baths: listing.baths, sqft: listing.sqft, mode: item.mode, plan: item.plan, total, deposit, balance: total - deposit } }) })
+    fetch('/api/notify', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ kind: 'acquisition', email: localStorage.getItem('caa-auth') || '', residence: { address: listing.address, city: listing.city ?? 'Las Vegas', beds: listing.beds, baths: listing.baths, sqft: listing.sqft, mode: item.mode, plan: item.plan, total, deposit, balance: total - deposit } }) })
       .then((response) => { if (!response.ok) throw new Error('acquire notification failed'); setAcquireStatus('sent'); })
       .catch(() => setAcquireStatus('error'));
   };
